@@ -62,6 +62,7 @@ static const float kCoverAphla = 0.2;
     isMoving = NO;
     
 }
+
 #pragma mark - 重写push
 /**
  *  重写push，是为了截张图片。还有重写navgationItem按钮并监听
