@@ -15,6 +15,9 @@
 		C3C10D7F1E193605006C4FC4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C3C10D7D1E193605006C4FC4 /* LaunchScreen.storyboard */; };
 		C3C10D8A1E193605006C4FC4 /* BBNavgationControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C10D891E193605006C4FC4 /* BBNavgationControllerTests.m */; };
 		C3C10D951E193605006C4FC4 /* BBNavgationControllerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C10D941E193605006C4FC4 /* BBNavgationControllerUITests.m */; };
+		C3C10DA71E193DA9006C4FC4 /* ALSNavgationController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C10DA61E193DA9006C4FC4 /* ALSNavgationController.m */; };
+		C3C10DAA1E193E62006C4FC4 /* ALSSecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C10DA91E193E62006C4FC4 /* ALSSecondViewController.m */; };
+		C3C10DAF1E194430006C4FC4 /* BBNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3C10DAE1E194430006C4FC4 /* BBNavigationController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +54,12 @@
 		C3C10D901E193605006C4FC4 /* BBNavgationControllerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BBNavgationControllerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C3C10D941E193605006C4FC4 /* BBNavgationControllerUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BBNavgationControllerUITests.m; sourceTree = "<group>"; };
 		C3C10D961E193605006C4FC4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C3C10DA51E193DA9006C4FC4 /* ALSNavgationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALSNavgationController.h; sourceTree = "<group>"; };
+		C3C10DA61E193DA9006C4FC4 /* ALSNavgationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALSNavgationController.m; sourceTree = "<group>"; };
+		C3C10DA81E193E62006C4FC4 /* ALSSecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ALSSecondViewController.h; sourceTree = "<group>"; };
+		C3C10DA91E193E62006C4FC4 /* ALSSecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ALSSecondViewController.m; sourceTree = "<group>"; };
+		C3C10DAD1E194430006C4FC4 /* BBNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BBNavigationController.h; sourceTree = "<group>"; };
+		C3C10DAE1E194430006C4FC4 /* BBNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BBNavigationController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,10 +110,15 @@
 		C3C10D6E1E193605006C4FC4 /* BBNavgationController */ = {
 			isa = PBXGroup;
 			children = (
+				C3C10DAC1E194430006C4FC4 /* BBNavigationController */,
 				C3C10D721E193605006C4FC4 /* AppDelegate.h */,
 				C3C10D731E193605006C4FC4 /* AppDelegate.m */,
+				C3C10DA51E193DA9006C4FC4 /* ALSNavgationController.h */,
+				C3C10DA61E193DA9006C4FC4 /* ALSNavgationController.m */,
 				C3C10D751E193605006C4FC4 /* ViewController.h */,
 				C3C10D761E193605006C4FC4 /* ViewController.m */,
+				C3C10DA81E193E62006C4FC4 /* ALSSecondViewController.h */,
+				C3C10DA91E193E62006C4FC4 /* ALSSecondViewController.m */,
 				C3C10D781E193605006C4FC4 /* Main.storyboard */,
 				C3C10D7B1E193605006C4FC4 /* Assets.xcassets */,
 				C3C10D7D1E193605006C4FC4 /* LaunchScreen.storyboard */,
@@ -138,6 +152,15 @@
 				C3C10D961E193605006C4FC4 /* Info.plist */,
 			);
 			path = BBNavgationControllerUITests;
+			sourceTree = "<group>";
+		};
+		C3C10DAC1E194430006C4FC4 /* BBNavigationController */ = {
+			isa = PBXGroup;
+			children = (
+				C3C10DAD1E194430006C4FC4 /* BBNavigationController.h */,
+				C3C10DAE1E194430006C4FC4 /* BBNavigationController.m */,
+			);
+			path = BBNavigationController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -276,9 +299,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3C10DA71E193DA9006C4FC4 /* ALSNavgationController.m in Sources */,
 				C3C10D771E193605006C4FC4 /* ViewController.m in Sources */,
 				C3C10D741E193605006C4FC4 /* AppDelegate.m in Sources */,
+				C3C10DAA1E193E62006C4FC4 /* ALSSecondViewController.m in Sources */,
 				C3C10D711E193605006C4FC4 /* main.m in Sources */,
+				C3C10DAF1E194430006C4FC4 /* BBNavigationController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,6 +453,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = TBD2L552RU;
 				INFOPLIST_FILE = BBNavgationController/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = OD.BBNavgationController;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -439,6 +466,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = TBD2L552RU;
 				INFOPLIST_FILE = BBNavgationController/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = OD.BBNavgationController;
 				PRODUCT_NAME = "$(TARGET_NAME)";
