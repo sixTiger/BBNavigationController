@@ -6,10 +6,6 @@
 //  Copyright © 2017年 bobo. All rights reserved.
 //
 
-//window窗口
-#define WINDOW  [[UIApplication sharedApplication] keyWindow]
-#define KScreenWidth [UIScreen mainScreen].bounds.size.width
-#define KScreenHeight [UIScreen mainScreen].bounds.size.height
 static const float kDurationTime = 0.30;
 static const float kScaleValue = 0.95;
 static const float kCoverAphla = 0.2;
@@ -28,7 +24,7 @@ static const float kCoverAphla = 0.2;
 @end
 
 @implementation BBNavigationController
-
+#pragma mark - lazy method
 
 - (UIView *)cover
 {
@@ -37,7 +33,7 @@ static const float kCoverAphla = 0.2;
         UIView *cover = [[UIView alloc] init];
         cover.backgroundColor = [UIColor blackColor];
         
-        cover.frame = WINDOW.bounds;
+        cover.frame = [UIApplication sharedApplication].keyWindow.bounds;
         cover.alpha = kCoverAphla;
         self.cover = cover;
     }
@@ -51,7 +47,7 @@ static const float kCoverAphla = 0.2;
     }
     return _screenShotsList;
 }
-
+#pragma mark -
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
@@ -89,26 +85,7 @@ static const float kCoverAphla = 0.2;
     [super pushViewController:viewController animated:animated];
 }
 
-/**
- *  截图
- */
-- (UIImage *)ViewRenderImage
-{
-    //这里如果传window的size会报错,因为程序刚启动的时候界面是push进来的，此时window还没有值，
-    UIGraphicsBeginImageContextWithOptions(CGSizeMake(KScreenWidth, KScreenHeight), YES, 0.0);
-    [WINDOW.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage * img = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return img;
-}
-
-- (void)back
-{
-    // 因为self本来就是一个导航控制器，self.navigationController这里是nil的
-    [self popViewControllerAnimated:YES];
-}
-
-#pragma mark -重写pop方法
+#pragma mark - 重写pop方法
 
 - (UIViewController *)popViewControllerAnimated:(BOOL)animated
 {
@@ -119,7 +96,7 @@ static const float kCoverAphla = 0.2;
         
         if (self.childViewControllers.count > 0) {
             
-            [self addLastScreenShotView];
+            [self addScreenShotIsTheFirst:NO];
         }
         
         //先缩放图片 kScaleValue
@@ -127,7 +104,7 @@ static const float kCoverAphla = 0.2;
         
         [UIView animateWithDuration:kDurationTime animations:^{
             
-            [self moveViewWithX:KScreenWidth];
+            [self moveViewWithX:[UIScreen mainScreen].bounds.size.width];
             self.cover.alpha = 0;
         } completion:^(BOOL finished) {
             
@@ -150,23 +127,33 @@ static const float kCoverAphla = 0.2;
     }
     return popVC;
 }
-
-/**
- *  添加背景图片到window上
- */
-- (void)addLastScreenShotView
-{
+#pragma mark - 重写popToRoot
+- (NSArray<UIViewController *> *)popToRootViewControllerAnimated:(BOOL)animated {
     
-    UIImage *lastScreenShot = [self.screenShotsList lastObject];
+    if (self.childViewControllers.count > 0) {
+        
+        [self addScreenShotIsTheFirst:YES];
+    }
     
-    if (lastScreenShotView) [lastScreenShotView removeFromSuperview];
+    //先缩放图片 kScaleValue
+    lastScreenShotView.transform = CGAffineTransformMakeScale(kScaleValue, kScaleValue);
     
-    lastScreenShotView = [[UIImageView alloc] initWithImage:lastScreenShot];
-    
-    [WINDOW insertSubview:lastScreenShotView atIndex:0];
-    
-    [WINDOW insertSubview:self.cover aboveSubview:lastScreenShotView];
-    
+    [UIView animateWithDuration:kDurationTime animations:^{
+        
+        [self moveViewWithX:[UIScreen mainScreen].bounds.size.width];
+        self.cover.alpha = 0;
+    } completion:^(BOOL finished) {
+        
+        [super popToRootViewControllerAnimated:NO];
+        CGRect frame = self.view.frame;
+        frame.origin.x = 0;
+        self.view.frame = frame;
+        self.cover.alpha = kCoverAphla;
+        [self.screenShotsList removeAllObjects];
+        if (lastScreenShotView) [lastScreenShotView removeFromSuperview];
+        
+    }];
+    return self.childViewControllers;
 }
 
 #pragma mark - 手势处理
@@ -181,7 +168,7 @@ static const float kCoverAphla = 0.2;
     } else {
         
         //得到触摸中在window上拖动的过程中的xy坐标
-        CGPoint translation = [sender locationInView:WINDOW];
+        CGPoint translation = [sender locationInView:[UIApplication sharedApplication].keyWindow];
         
         if (translation.x - startTouch.x < 0) {//禁止向左移动
             isMoving = NO;
@@ -194,13 +181,12 @@ static const float kCoverAphla = 0.2;
             if (translation.x - startTouch.x > 100) {
                 [UIView animateWithDuration:kDurationTime animations:^{
                     
-                    [self moveViewWithX:KScreenWidth];
+                    [self moveViewWithX:[UIScreen mainScreen].bounds.size.width];
                     self.cover.alpha = 0;
                     
                 } completion:^(BOOL finished) {
                     
                     [self gesturePopViewControllerAnimated:NO];
-                    //将 self.view 的 x 坐标重置为0
                     CGRect frame = self.view.frame;
                     frame.origin.x = 0;
                     self.view.frame = frame;
@@ -211,18 +197,15 @@ static const float kCoverAphla = 0.2;
                 
             }else{
                 
-                //不大于100时就移动原位
                 [UIView animateWithDuration:kDurationTime animations:^{
                     [self moveViewWithX:0];
-                } completion:^(BOOL finished) {
-                    
                 }];
             }
         }else if(sender.state == UIGestureRecognizerStateBegan){
             
             startTouch = translation;
             isMoving = YES;
-            [self addLastScreenShotView];
+            [self addScreenShotIsTheFirst:NO];
         }
         
         if (isMoving) {
@@ -233,6 +216,44 @@ static const float kCoverAphla = 0.2;
     
 }
 
+#pragma mark - 私有方法
+
+/**
+ *  截图
+ */
+- (UIImage *)ViewRenderImage
+{
+    //这里如果传window的size会报错,因为程序刚启动的时候界面是push进来的，此时window还没有值，
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake([UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height), YES, 0.0);
+    [[UIApplication sharedApplication].keyWindow.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage * img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return img;
+}
+
+- (void)back
+{
+    // 因为self本来就是一个导航控制器，self.navigationController这里是nil的
+    [self popViewControllerAnimated:YES];
+}
+
+/**
+ *  添加背景图片到window上
+ */
+- (void)addScreenShotIsTheFirst:(BOOL)whether
+{
+    UIImage *screenShot;
+    if (whether == YES) {
+        screenShot = [self.screenShotsList firstObject];
+    } else {
+        screenShot = [self.screenShotsList lastObject];
+    }
+    if (lastScreenShotView) [lastScreenShotView removeFromSuperview];
+    lastScreenShotView = [[UIImageView alloc] initWithImage:screenShot];
+    [[UIApplication sharedApplication].keyWindow insertSubview:lastScreenShotView atIndex:0];
+    [[UIApplication sharedApplication].keyWindow insertSubview:self.cover aboveSubview:lastScreenShotView];
+}
+
 - (UIViewController *)gesturePopViewControllerAnimated:(BOOL)animated
 {
     [self.screenShotsList removeLastObject];
@@ -241,7 +262,7 @@ static const float kCoverAphla = 0.2;
 
 - (void)moveViewWithX:(float)x
 {
-    x = x > KScreenWidth ? KScreenWidth : x;
+    x = x > [UIScreen mainScreen].bounds.size.width ? [UIScreen mainScreen].bounds.size.width : x;
     
     CGRect frame = self.view.frame;
     frame.origin.x = x;
@@ -253,7 +274,7 @@ static const float kCoverAphla = 0.2;
         scale = (x / 6400) + kScaleValue;//缩放大小
     }
     
-    if (x == KScreenWidth) {
+    if (x == [UIScreen mainScreen].bounds.size.width) {
         
         lastScreenShotView.transform = CGAffineTransformIdentity;
         
