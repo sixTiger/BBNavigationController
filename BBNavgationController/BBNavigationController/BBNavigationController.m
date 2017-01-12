@@ -263,7 +263,6 @@ static const float kCoverAphla = 0.2;
 - (void)moveViewWithX:(float)x
 {
     x = x > [UIScreen mainScreen].bounds.size.width ? [UIScreen mainScreen].bounds.size.width : x;
-    
     CGRect frame = self.view.frame;
     frame.origin.x = x;
     self.view.frame = frame;
@@ -291,7 +290,5 @@ static const float kCoverAphla = 0.2;
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-
 
 @end
